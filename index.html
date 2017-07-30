@@ -33,35 +33,53 @@
                 'this platform.');
         }
     </script>
-    <script src="phaser.min.js"></script>
+    <script src="phaser.js"></script>
     <script>
 
         var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
 
         function preload() {
 
-            game.stage.backgroundColor = '#85b5e1';
+            // game.stage.backgroundColor = '#85b5e1';
 
-            game.load.baseURL = 'http://examples.phaser.io/assets/';
+            // game.load.baseURL = 'http://examples.phaser.io/assets/';
             game.load.crossOrigin = 'anonymous';
 
-            game.load.image('player', 'sprites/phaser-dude.png');
-            game.load.image('platform', 'sprites/platform.png');
+            // game.load.image('player', 'sprites/phaser-dude.png');
+            // game.load.image('platform', 'sprites/platform.png');
 
+            game.load.tilemap('map1', 'maps/map1.json', null, Phaser.Tilemap.TITLED_JSON);
+            game.load.image('tiles', 'dungeon_sheet.png');
         }
 
         var player;
         var platforms;
         var cursors;
         var jumpButton;
+        var map;
+        var layer;
 
         function create() {
 
-            player = game.add.sprite(100, 200, 'player');
+            // player = game.add.sprite(100, 200, 'player');
 
-            game.physics.arcade.enable(player);
+            // game.physics.arcade.enable(player);
 
-            player.body.collideWorldBounds = true;
+            //  The 'mario' key here is the Loader key given in game.load.tilemap
+            map = game.add.tilemap('map1');
+
+            //  The first parameter is the tileset name, as specified in the Tiled map editor (and in the tilemap json file)
+            //  The second parameter maps this name to the Phaser.Cache key 'tiles'
+            map.addTilesetImage('dungeon_sheet', 'tiles');
+
+            //  Creates a layer from the World1 layer in the map data.
+            //  A Layer is effectively like a Phaser.Sprite, so is added to the display list.
+            layer = map.createLayer('Floor');
+
+            //  This resizes the game world to match the layer dimensions
+            layer.resizeWorld();
+
+            // player.body.collideWorldBounds = true;
 
             cursors = game.input.keyboard.createCursorKeys();
             jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -70,30 +88,30 @@
 
         function update () {
 
-            game.physics.arcade.collide(player);
-
-            if (cursors.left.isDown || cursors.right.isDown || cursors.up.isDown || cursors.down.isDown) {
-                if (cursors.left.isDown)
-                {
-                    player.body.velocity.x = -250;
-                }
-                if (cursors.right.isDown)
-                {
-                    player.body.velocity.x = 250;
-                }
-                if (cursors.up.isDown)
-                {
-                    player.body.velocity.y = -250;
-                }
-                if (cursors.down.isDown)
-                {
-                    player.body.velocity.y = 250;
-                }
-            }
-            else {
-                player.body.velocity.x = 0;
-                player.body.velocity.y = 0;
-            }
+            // game.physics.arcade.collide(player);
+            //
+            // if (cursors.left.isDown || cursors.right.isDown || cursors.up.isDown || cursors.down.isDown) {
+            //     if (cursors.left.isDown)
+            //     {
+            //         player.body.velocity.x = -250;
+            //     }
+            //     if (cursors.right.isDown)
+            //     {
+            //         player.body.velocity.x = 250;
+            //     }
+            //     if (cursors.up.isDown)
+            //     {
+            //         player.body.velocity.y = -250;
+            //     }
+            //     if (cursors.down.isDown)
+            //     {
+            //         player.body.velocity.y = 250;
+            //     }
+            // }
+            // else {
+            //     player.body.velocity.x = 0;
+            //     player.body.velocity.y = 0;
+            // }
         }
 
         function render () {
