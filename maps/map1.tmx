@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="dungeon_sheet" tilewidth="16" tileheight="16">
+  <image source="../dungeon_sheet.png" width="384" height="160"/>
+ </tileset>
+ <layer name="Floor" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt0UENACAMwMC5wr8zDOxPSe6SKugMAAAAAAAAAAAAFWeJd/xo8aPFjxY/Wvxo8aPFDwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfnEBQUUImQ==
+  </data>
+ </layer>
+ <layer name="Walls" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt0bEJgDAUBNBU6hTiFJIp1P2nMY0SAtb/g+/BFdcdXCkAAAAAAAAAAABkMbXMXZbYOb+3Dn2LGMFrH3oNWcHDH7n4Ixd/5OKPXI6Ws8sVOwcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD7d6oUEEw==
+  </data>
+ </layer>
+ <layer name="Forground" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztzrENgDAMAEHvPxESVWAKYJlYmSCdjXQnff8RAAAAAAAAAAAAdDKyK7urR1ie7M2+6hGATUf1ADR0Vg8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC/MwGfoAZI
+  </data>
+ </layer>
+ <objectgroup name="Objects" width="100" height="100">
+  <object x="344" y="413" width="65" height="91"/>
+ </objectgroup>
+</map>
