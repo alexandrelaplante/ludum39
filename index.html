@@ -104,28 +104,38 @@
 
             cursors = game.input.keyboard.createCursorKeys();
 
-            cursors.left.onDown.add(function() {
-                if (knight.body.x == knight.targetX * SCALE) {
-                    knight.targetX -= TILE_WIDTH;
+            function moveX(direction) {
+                targetX = knight.targetX + direction*TILE_WIDTH;
+                targetY = knight.targetY;
+
+                if (knight.body.x == knight.targetX * SCALE && !isWall(targetX, targetY)) {
+                    knight.targetX = targetX;
                 }
+            }
+
+            function moveY(direction) {
+                targetX = knight.targetX;
+                targetY = knight.targetY + direction*TILE_WIDTH;
+
+                if (knight.body.y == knight.targetY * SCALE && !isWall(targetX, targetY)) {
+                    knight.targetY = targetY;
+                }
+            }
+
+            cursors.left.onDown.add(function() {
+                return moveX(-1);
             }, this);
 
             cursors.right.onDown.add(function() {
-                if (knight.body.x == knight.targetX * SCALE) {
-                    knight.targetX += TILE_WIDTH;
-                }
+                return moveX(1)
             }, this);
 
             cursors.up.onDown.add(function() {
-                if (knight.body.y == knight.targetY * SCALE) {
-                    knight.targetY -= TILE_WIDTH;
-                }
+                return moveY(-1);
             }, this);
 
             cursors.down.onDown.add(function() {
-                if (knight.body.y == knight.targetY * SCALE) {
-                    knight.targetY += TILE_WIDTH;
-                }
+                return moveY(1);
             }, this);
         }
 
@@ -147,10 +157,9 @@
             var y = wallLayer.getTileY(y);
 
             var tile = map.getTile(x, y, wallLayer);
-            console.log(tile);
 
             // Note: JSON.stringify will convert the object tile properties to a string
-            currentDataString = JSON.stringify( tile.properties );
+            return tile != null;
 
         }
 
