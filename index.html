@@ -114,42 +114,45 @@
 
             cursors = game.input.keyboard.createCursorKeys();
 
-            function moveX(direction) {
-                targetX = knight.targetX + direction*TILE_WIDTH;
-                targetY = knight.targetY;
+            function move(targetX, targetY) {
+                var canMove = (
+                    knight.body.x == knight.targetX
+                    && knight.body.y == knight.targetY
+                    && !isWall(targetX, targetY)
+                );
 
-                if (knight.body.x == knight.targetX && !isWall(targetX, targetY)) {
+                if (canMove) {
                     knight.targetX = targetX;
-                }
-            }
-
-            function moveY(direction) {
-                targetX = knight.targetX;
-                targetY = knight.targetY + direction*TILE_WIDTH;
-
-                if (knight.body.y == knight.targetY && !isWall(targetX, targetY)) {
                     knight.targetY = targetY;
                 }
             }
 
             cursors.left.onDown.add(function() {
                 knight.animations.play('left');
-                return moveX(-1);
+                var targetX = knight.targetX - TILE_WIDTH;
+                var targetY = knight.targetY;
+                return move(targetX, targetY);
             }, this);
 
             cursors.right.onDown.add(function() {
                 knight.animations.play('right');
-                return moveX(1)
+                var targetX = knight.targetX + TILE_WIDTH;
+                var targetY = knight.targetY;
+                return move(targetX, targetY);
             }, this);
 
             cursors.up.onDown.add(function() {
                 knight.animations.play('up');
-                return moveY(-1);
+                var targetX = knight.targetX;
+                var targetY = knight.targetY - TILE_WIDTH;
+                return move(targetX, targetY);
             }, this);
 
             cursors.down.onDown.add(function() {
                 knight.animations.play('down');
-                return moveY(1);
+                var targetX = knight.targetX;
+                var targetY = knight.targetY + TILE_WIDTH;
+                return move(targetX, targetY);
             }, this);
         }
 
