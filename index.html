@@ -99,31 +99,37 @@
             knight.targetY = knight.body.y;
             // knight.body.collideWorldBounds = true;
             knight.frame = 0;
-            knight.animations.add('up', [0, 1, 2], 5, true);
-            knight.animations.play('up');
+            knight.animations.add('up', [0, 1, 2], 8, true);
+            knight.animations.add('down', [12, 13, 14], 8, true);
+            knight.animations.add('left', [18, 19, 20], 8, true);
+            knight.animations.add('right', [6, 7, 8], 8, true);
 
             cursors = game.input.keyboard.createCursorKeys();
 
             cursors.left.onDown.add(function() {
                 if (knight.body.x == knight.targetX * SCALE) {
+                    knight.animations.play('left');
                     knight.targetX -= TILE_WIDTH;
                 }
             }, this);
 
             cursors.right.onDown.add(function() {
                 if (knight.body.x == knight.targetX * SCALE) {
+                    knight.animations.play('right');
                     knight.targetX += TILE_WIDTH;
                 }
             }, this);
 
             cursors.up.onDown.add(function() {
                 if (knight.body.y == knight.targetY * SCALE) {
+                    knight.animations.play('up');
                     knight.targetY -= TILE_WIDTH;
                 }
             }, this);
 
             cursors.down.onDown.add(function() {
                 if (knight.body.y == knight.targetY * SCALE) {
+                    knight.animations.play('down');
                     knight.targetY += TILE_WIDTH;
                 }
             }, this);
@@ -173,6 +179,9 @@
 
             game.physics.arcade.collide(knight);
 
+            if (knight.body.x == knight.targetX * SCALE && knight.body.y == knight.targetY * SCALE) {
+                knight.animations.stop();
+            }
             if (knight.body.x < knight.targetX * SCALE) {
                 knight.body.x += 1;
             } else if (knight.body.x > knight.targetX * SCALE) {
