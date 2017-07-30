@@ -1,0 +1,36 @@
+<html>
+    <head>
+    </head>
+    <body>
+        <div id="chargingState"></div>
+        <script>
+            var chargingStateEl = document.getElementById('chargingState');
+
+            function updateBatteryUI(battery) {
+                if (battery.charging === true) {
+                    chargingStateEl.textContent = 'Charging';
+                } else if (battery.charging === false) {
+                    chargingStateEl.textContent = 'Discharging';
+                }
+            }
+
+            function monitorBattery(battery) {
+                // Update the initial UI.
+                updateBatteryUI(battery);
+
+                // Monitor for futher updates.
+                battery.addEventListener(
+                    'chargingchange',
+                    updateBatteryUI.bind(null, battery),
+                );
+            }
+
+            if ('getBattery' in navigator) {
+                navigator.getBattery().then(monitorBattery);
+            } else {
+                ChromeSamples.setStatus('The Battery Status API is not supported on ' +
+                    'this platform.');
+            }
+        </script>
+    </body>
+    </html>
