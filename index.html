@@ -36,6 +36,9 @@
     <script src="phaser.js"></script>
     <script>
 
+        var TILE_WIDTH = 16;
+        var SCALE = 3.5
+
         var game = new Phaser.Game(
             800,
             600,
@@ -63,7 +66,7 @@
             Phaser.Canvas.setImageRenderingCrisp(game.canvas)
             PIXI.scaleModes.DEFAULT = PIXI.scaleModes.NEAREST
 
-            game.world.scale.setTo(3.5, 3.5);
+            game.world.scale.setTo(SCALE, SCALE);
             game.physics.startSystem(Phaser.Physics.ARCADE);
 
             map = game.add.tilemap('map');
@@ -83,7 +86,7 @@
             //  Our painting marker
             marker = game.add.graphics();
             marker.lineStyle(2, 0xffffff, 1);
-            marker.drawRect(0, 0, 16, 16);
+            marker.drawRect(0, 0, TILE_WIDTH, TILE_WIDTH);
 
             game.input.addMoveCallback(updateMarker, this);
 
@@ -95,8 +98,8 @@
 
         function getTileProperties() {
 
-            var x = forgroundLayer.getTileX(game.input.activePointer.worldX);
-            var y = forgroundLayer.getTileY(game.input.activePointer.worldY);
+            var x = forgroundLayer.getTileX(game.input.activePointer.worldX / SCALE);
+            var y = forgroundLayer.getTileY(game.input.activePointer.worldY / SCALE);
 
             var tile = map.getTile(x, y, forgroundLayer);
 
@@ -109,8 +112,8 @@
 
         function updateMarker() {
 
-            marker.x = forgroundLayer.getTileX(game.input.activePointer.worldX) * 32;
-            marker.y = forgroundLayer.getTileY(game.input.activePointer.worldY) * 32;
+            marker.x = forgroundLayer.getTileX(game.input.activePointer.worldX / SCALE) * TILE_WIDTH ;
+            marker.y = forgroundLayer.getTileY(game.input.activePointer.worldY / SCALE) * TILE_WIDTH ;
 
         }
 
@@ -139,9 +142,9 @@
         function render() {
 
             if(currentDataString){
-                game.debug.text('Tile properties: ' + currentDataString, 16, 550);
+                game.debug.text('Tile properties: ' + currentDataString, TILE_WIDTH, 550);
             } else {
-                game.debug.text("Click on a tile to reveal the properties of the tile", 16, 550);
+                game.debug.text("Click on a tile to reveal the properties of the tile", TILE_WIDTH, 550);
             }
         }
 
