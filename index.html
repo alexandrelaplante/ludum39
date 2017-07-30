@@ -50,7 +50,9 @@
         }
 
         var map;
-        var layer;
+        var floorLayer;
+        var wallLayer;
+        var forgroundLayer;
         var marker;
 
         // var sprite;
@@ -67,9 +69,13 @@
 
             // map.setCollisionBetween(1, 12);
 
-            layer = map.createLayer('Floor');
+            floorLayer = map.createLayer('Floor');
+            wallLayer = map.createLayer('Walls');
+            forgroundLayer = map.createLayer('Forground');
 
-            layer.resizeWorld();
+            floorLayer.resizeWorld();
+            wallLayer.resizeWorld();
+            forgroundLayer.resizeWorld();
 
             //  Our painting marker
             marker = game.add.graphics();
@@ -86,10 +92,10 @@
 
         function getTileProperties() {
 
-            var x = layer.getTileX(game.input.activePointer.worldX);
-            var y = layer.getTileY(game.input.activePointer.worldY);
+            var x = forgroundLayer.getTileX(game.input.activePointer.worldX);
+            var y = forgroundLayer.getTileY(game.input.activePointer.worldY);
 
-            var tile = map.getTile(x, y, layer);
+            var tile = map.getTile(x, y, forgroundLayer);
 
             // Note: JSON.stringify will convert the object tile properties to a string
             currentDataString = JSON.stringify( tile.properties );
@@ -100,8 +106,8 @@
 
         function updateMarker() {
 
-            marker.x = layer.getTileX(game.input.activePointer.worldX) * 32;
-            marker.y = layer.getTileY(game.input.activePointer.worldY) * 32;
+            marker.x = forgroundLayer.getTileX(game.input.activePointer.worldX) * 32;
+            marker.y = forgroundLayer.getTileY(game.input.activePointer.worldY) * 32;
 
         }
 

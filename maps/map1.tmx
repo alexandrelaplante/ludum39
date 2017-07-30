@@ -2,6 +2,26 @@
 <map version="1.0" orientation="orthogonal" width="6" height="10" tilewidth="16" tileheight="16">
  <tileset firstgid="1" name="dungeon_sheet" tilewidth="16" tileheight="16">
   <image source="../dungeon_sheet.png" width="384" height="160"/>
+  <tile id="5">
+   <properties>
+    <property name="wall" value="true"/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="wall" value="true"/>
+   </properties>
+  </tile>
+  <tile id="29">
+   <properties>
+    <property name="wall" value="true"/>
+   </properties>
+  </tile>
+  <tile id="31">
+   <properties>
+    <property name="wall" value="true"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="Floor" width="6" height="10">
   <data encoding="base64" compression="zlib">
@@ -18,8 +38,5 @@
    eJxjYCAPHATiQ0B8GE38JhDfAuLbZJqLDnYQqW43keoAf4UGSA==
   </data>
  </layer>
- <objectgroup name="Objects" width="6" height="10">
-  <object type="Floor" x="24" y="60" width="64" height="91"/>
-  <object x="40" y="42" width="32" height="19"/>
- </objectgroup>
+ <objectgroup name="Objects" width="6" height="10"/>
 </map>
