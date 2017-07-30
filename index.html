@@ -60,7 +60,10 @@
         var currentDataString;
 
         function create() {
+            Phaser.Canvas.setImageRenderingCrisp(game.canvas)
+            PIXI.scaleModes.DEFAULT = PIXI.scaleModes.NEAREST
 
+            game.world.scale.setTo(3.5, 3.5);
             game.physics.startSystem(Phaser.Physics.ARCADE);
 
             map = game.add.tilemap('map');
@@ -80,7 +83,7 @@
             //  Our painting marker
             marker = game.add.graphics();
             marker.lineStyle(2, 0xffffff, 1);
-            marker.drawRect(0, 0, 32, 32);
+            marker.drawRect(0, 0, 16, 16);
 
             game.input.addMoveCallback(updateMarker, this);
 
