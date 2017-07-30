@@ -50,6 +50,7 @@
         function preload() {
             game.load.tilemap('map', 'maps/map1.json', null, Phaser.Tilemap.TILED_JSON);
             game.load.image('dungeon_sheet', 'dungeon_sheet.png');
+            game.load.spritesheet('knight', 'knightanimation.png', 32, 32);
         }
 
         var map;
@@ -58,7 +59,7 @@
         var forgroundLayer;
         var marker;
 
-        // var sprite;
+        var knight;
         var cursors;
         var currentDataString;
 
@@ -91,6 +92,9 @@
             game.input.addMoveCallback(updateMarker, this);
 
             game.input.onDown.add(getTileProperties, this);
+
+            knight = game.add.sprite(0, 0, 'knight');
+            knight.frame = 1;
 
             cursors = game.input.keyboard.createCursorKeys();
 
