@@ -50,7 +50,7 @@
         function preload() {
             game.load.tilemap('map', 'maps/map1.json', null, Phaser.Tilemap.TILED_JSON);
             game.load.image('dungeon_sheet', 'dungeon_sheet.png');
-            game.load.spritesheet('knight', 'knightanimation.png', 32, 32);
+            game.load.spritesheet('knight', 'knightanimation.png', 12, 16);
         }
 
         var map;
@@ -93,11 +93,23 @@
 
             game.input.onDown.add(getTileProperties, this);
 
-            knight = game.add.sprite(0, 0, 'knight');
-            knight.frame = 1;
+            knight = game.add.sprite(3*TILE_WIDTH+2, 5*TILE_WIDTH, 'knight');
+            game.physics.arcade.enable(knight);
+            knight.targetX = knight.body.x;
+            // knight.body.collideWorldBounds = true;
+            knight.frame = 0;
+            knight.animations.add('up', [0, 1, 2], 5, true);
+            knight.animations.play('up');
 
             cursors = game.input.keyboard.createCursorKeys();
 
+            cursors.left.onDown.add(function() {
+                console.log('ON DOWNNN');
+                if (knight.body.x == knight.targetX) {
+                    knight.targetX -= TILE_WIDTH;
+                }
+            }, this);
+            console.log('END OF CREATE' + knight.targetX, knight.body.x);
         }
 
         function getTileProperties() {
@@ -123,23 +135,38 @@
 
         function update() {
 
-            if (cursors.left.isDown)
-            {
-                game.camera.x -= 4;
-            }
-            else if (cursors.right.isDown)
-            {
-                game.camera.x += 4;
+            game.physics.arcade.collide(knight);
+
+            if (knight.targetX != knight.body.x) {
+                if (knight.targetX > knight.body.x) {
+                    knight.body.x -= 5;
+                } else if (knight.targetX < knight.body.x) {
+                    console.log(knight.targetX, knight.body.x);
+                    debugger;
+                    knight.body.x += 5;
+                }
             }
 
-            if (cursors.up.isDown)
-            {
-                game.camera.y -= 4;
-            }
-            else if (cursors.down.isDown)
-            {
-                game.camera.y += 4;
-            }
+
+
+            // if (cursors.left.onDown)
+            // {
+            //     knight.targetX = knight.body.x -= TILE_WIDTH;
+            //     // game.camera.x -= 4;
+            // }
+            // else if (cursors.right.isDown)
+            // {
+            //     // game.camera.x += 4;
+            // }
+            //
+            // if (cursors.up.isDown)
+            // {
+            //     // game.camera.y -= 4;
+            // }
+            // else if (cursors.down.isDown)
+            // {
+            //     // game.camera.y += 4;
+            // }
 
         }
 
