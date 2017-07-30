@@ -36,86 +36,105 @@
     <script src="phaser.js"></script>
     <script>
 
-        var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
+        var game = new Phaser.Game(
+            800,
+            600,
+            Phaser.AUTO,
+            'ludum39',
+            { preload: preload, create: create, update: update, render: render }
+        );
 
         function preload() {
-
-            // game.stage.backgroundColor = '#85b5e1';
-
-            // game.load.baseURL = 'http://examples.phaser.io/assets/';
-            game.load.crossOrigin = 'anonymous';
-
-            // game.load.image('player', 'sprites/phaser-dude.png');
-            // game.load.image('platform', 'sprites/platform.png');
-
-            game.load.tilemap('map1', 'maps/map1.json', null, Phaser.Tilemap.TITLED_JSON);
-            game.load.image('tiles', 'dungeon_sheet.png');
+            game.load.tilemap('map', 'maps/map1.json', null, Phaser.Tilemap.TILED_JSON);
+            game.load.image('dungeon_sheet', 'dungeon_sheet.png');
         }
 
-        var player;
-        var platforms;
-        var cursors;
-        var jumpButton;
         var map;
         var layer;
+        var marker;
+
+        // var sprite;
+        var cursors;
+        var currentDataString;
 
         function create() {
 
-            // player = game.add.sprite(100, 200, 'player');
+            game.physics.startSystem(Phaser.Physics.ARCADE);
 
-            // game.physics.arcade.enable(player);
+            map = game.add.tilemap('map');
 
-            //  The 'mario' key here is the Loader key given in game.load.tilemap
-            map = game.add.tilemap('map1');
+            map.addTilesetImage('dungeon_sheet');
 
-            //  The first parameter is the tileset name, as specified in the Tiled map editor (and in the tilemap json file)
-            //  The second parameter maps this name to the Phaser.Cache key 'tiles'
-            map.addTilesetImage('dungeon_sheet', 'tiles');
+            // map.setCollisionBetween(1, 12);
 
-            //  Creates a layer from the World1 layer in the map data.
-            //  A Layer is effectively like a Phaser.Sprite, so is added to the display list.
             layer = map.createLayer('Floor');
 
-            //  This resizes the game world to match the layer dimensions
             layer.resizeWorld();
 
-            // player.body.collideWorldBounds = true;
+            //  Our painting marker
+            marker = game.add.graphics();
+            marker.lineStyle(2, 0xffffff, 1);
+            marker.drawRect(0, 0, 32, 32);
+
+            game.input.addMoveCallback(updateMarker, this);
+
+            game.input.onDown.add(getTileProperties, this);
 
             cursors = game.input.keyboard.createCursorKeys();
-            jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
         }
 
-        function update () {
+        function getTileProperties() {
 
-            // game.physics.arcade.collide(player);
-            //
-            // if (cursors.left.isDown || cursors.right.isDown || cursors.up.isDown || cursors.down.isDown) {
-            //     if (cursors.left.isDown)
-            //     {
-            //         player.body.velocity.x = -250;
-            //     }
-            //     if (cursors.right.isDown)
-            //     {
-            //         player.body.velocity.x = 250;
-            //     }
-            //     if (cursors.up.isDown)
-            //     {
-            //         player.body.velocity.y = -250;
-            //     }
-            //     if (cursors.down.isDown)
-            //     {
-            //         player.body.velocity.y = 250;
-            //     }
-            // }
-            // else {
-            //     player.body.velocity.x = 0;
-            //     player.body.velocity.y = 0;
-            // }
-        }
+            var x = layer.getTileX(game.input.activePointer.worldX);
+            var y = layer.getTileY(game.input.activePointer.worldY);
 
-        function render () {
+            var tile = map.getTile(x, y, layer);
+
+            // Note: JSON.stringify will convert the object tile properties to a string
+            currentDataString = JSON.stringify( tile.properties );
+
+            tile.properties.wibble = true;
 
         }
+
+        function updateMarker() {
+
+            marker.x = layer.getTileX(game.input.activePointer.worldX) * 32;
+            marker.y = layer.getTileY(game.input.activePointer.worldY) * 32;
+
+        }
+
+        function update() {
+
+            if (cursors.left.isDown)
+            {
+                game.camera.x -= 4;
+            }
+            else if (cursors.right.isDown)
+            {
+                game.camera.x += 4;
+            }
+
+            if (cursors.up.isDown)
+            {
+                game.camera.y -= 4;
+            }
+            else if (cursors.down.isDown)
+            {
+                game.camera.y += 4;
+            }
+
+        }
+
+        function render() {
+
+            if(currentDataString){
+                game.debug.text('Tile properties: ' + currentDataString, 16, 550);
+            } else {
+                game.debug.text("Click on a tile to reveal the properties of the tile", 16, 550);
+            }
+        }
+
     </script>
 </html>

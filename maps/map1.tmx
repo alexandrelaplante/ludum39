@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="6" height="27" tilewidth="16" tileheight="16">
+<map version="1.0" orientation="orthogonal" width="6" height="10" tilewidth="16" tileheight="16">
  <tileset firstgid="1" name="dungeon_sheet" tilewidth="16" tileheight="16">
   <image source="../dungeon_sheet.png" width="384" height="160"/>
  </tileset>
- <layer name="Floor" width="6" height="27">
+ <layer name="Floor" width="6" height="10">
   <data encoding="base64" compression="zlib">
-   eJxjYBg6wBwLHkriowA3AADnPAiZ
+   eJxjYCAdmGPBQ0UcADodCJk=
   </data>
  </layer>
- <layer name="Walls" width="6" height="27">
+ <layer name="Walls" width="6" height="10">
   <data encoding="base64" compression="zlib">
-   eJxjYBg6gA2I2ZEwB1RcDk2dApQ2QxO3oJO4HxD7I+EAhlFACAAAm/MEEw==
+   eJxjYCAdsAExOxLmgIrLoalTgNJmaOIWdBL3A2J/JBwAxAAF3wQT
   </data>
  </layer>
- <layer name="Forground" width="6" height="27">
+ <layer name="Forground" width="6" height="10">
   <data encoding="base64" compression="zlib">
-   eJxjYBha4CAQHwLiw2jiN4H4FhDfppI9O4hUt5tK9o10AACRZgZI
+   eJxjYCAPHATiQ0B8GE38JhDfAuLbZJqLDnYQqW43keoAf4UGSA==
   </data>
  </layer>
- <objectgroup name="Objects" width="6" height="27">
-  <object type="Floor" x="24" y="140" width="64" height="91"/>
-  <object x="40" y="122" width="32" height="19"/>
+ <objectgroup name="Objects" width="6" height="10">
+  <object type="Floor" x="24" y="60" width="64" height="91"/>
+  <object x="40" y="42" width="32" height="19"/>
  </objectgroup>
 </map>
