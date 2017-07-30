@@ -124,6 +124,12 @@
                 if (canMove) {
                     knight.targetX = targetX;
                     knight.targetY = targetY;
+                    s = game.add.tween(knight.body);
+                    s.to({x: targetX, y:targetY}, 500, Phaser.Easing.Linear.None);
+                    s.onComplete.addOnce(function(){
+                        knight.animations.stop();
+                    }, this);
+                    s.start();
                 }
             }
 
@@ -196,21 +202,6 @@
         }
 
         function update() {
-
-            if (knight.body.x == knight.targetX && knight.body.y == knight.targetY) {
-                knight.animations.stop();
-            }
-            if (knight.body.x < knight.targetX) {
-                knight.body.x += 1;
-            } else if (knight.body.x > knight.targetX) {
-                knight.body.x -= 1;
-            }
-
-            if (knight.body.y < knight.targetY) {
-                knight.body.y += 1;
-            } else if (knight.body.y > knight.targetY) {
-                knight.body.y -= 1;
-            }
 
         }
 
