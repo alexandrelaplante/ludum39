@@ -114,14 +114,15 @@
 
             cursors = game.input.keyboard.createCursorKeys();
 
-            function move(targetX, targetY) {
-                var canMove = (
-                    knight.body.x == knight.targetX
-                    && knight.body.y == knight.targetY
-                    && !isWall(targetX, targetY)
-                );
+            function move(targetX, targetY, animation) {
 
-                if (canMove) {
+                if (isMoving()) {
+                    return;
+                }
+
+                knight.animations.play(animation);
+
+                if (!isWall(targetX, targetY)) {
                     knight.targetX = targetX;
                     knight.targetY = targetY;
                     s = game.add.tween(knight.body);
@@ -134,32 +135,35 @@
             }
 
             cursors.left.onDown.add(function() {
-                knight.animations.play('left');
                 var targetX = knight.targetX - TILE_WIDTH;
                 var targetY = knight.targetY;
-                return move(targetX, targetY);
+                return move(targetX, targetY, 'left');
             }, this);
 
             cursors.right.onDown.add(function() {
-                knight.animations.play('right');
                 var targetX = knight.targetX + TILE_WIDTH;
                 var targetY = knight.targetY;
-                return move(targetX, targetY);
+                return move(targetX, targetY, 'right');
             }, this);
 
             cursors.up.onDown.add(function() {
-                knight.animations.play('up');
                 var targetX = knight.targetX;
                 var targetY = knight.targetY - TILE_WIDTH;
-                return move(targetX, targetY);
+                return move(targetX, targetY, 'up');
             }, this);
 
             cursors.down.onDown.add(function() {
-                knight.animations.play('down');
                 var targetX = knight.targetX;
                 var targetY = knight.targetY + TILE_WIDTH;
-                return move(targetX, targetY);
+                return move(targetX, targetY, 'down');
             }, this);
+        }
+
+        function isMoving() {
+            return (
+                knight.body.x != knight.targetX
+                || knight.body.y != knight.targetY
+            );
         }
 
         function getTileProperties(x, y) {
@@ -202,7 +206,9 @@
         }
 
         function update() {
-
+            if (!isMoving()){
+                knight.animations.stop()
+            }
         }
 
         function render() {
