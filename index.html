@@ -35,8 +35,8 @@
         var X_OFFSET = 2;
 
         var game = new Phaser.Game(
-            800,
-            600,
+            200,
+            200,
             Phaser.AUTO,
             'ludum39',
             { preload: preload, create: create, update: update, render: render }
@@ -210,7 +210,7 @@
                         '}',
                     '}',
                     'float luminosity = mouse.x;',
-                    'gl_FragColor = sum * luminosity * 0.001 + texture2D(uSampler, texcoord);',
+                    'gl_FragColor = sum * luminosity * 0.0002 + texture2D(uSampler, texcoord);',
                 '}'
             ];
 
@@ -295,11 +295,11 @@
                 if (newBatteryState) {
                     currentMap.door.animations.play('open');
                     currentMap.door.isOpen = true;
-                    game.add.tween(luminosity).to({x: 5000}, 1000, Phaser.Easing.Bounce.In, true);
+                    game.add.tween(luminosity).to({x: 5000}, 1000, Phaser.Easing.Quadratic.In, true);
                 } else {
                     currentMap.door.animations.play('close');
                     currentMap.door.isOpen = false;
-                    game.add.tween(luminosity).to({x: -5000}, 1000, Phaser.Easing.Bounce.Out, true);
+                    game.add.tween(luminosity).to({x: -5000}, 1000, Phaser.Easing.Quadratic.Out, true);
                 }
             }
 
