@@ -8,7 +8,7 @@
     <script>
         function updateText() {
             var chargingStateEl = document.getElementById('chargingState');
-            chargingStateEl.textContent = 'Charing: ' + window.battery.charging;
+            chargingStateEl.textContent = 'Charging: ' + window.battery.charging;
         }
 
         function onClick() {
@@ -26,6 +26,7 @@
                 'The Battery Status API is not supported on ' +
                 'this platform.'
             );
+            window.battery = {charging: true};
         }
 
         var TILE_WIDTH = 16;
@@ -49,6 +50,8 @@
             game.load.image('dungeon_sheet', 'dungeon_sheet.png');
             game.load.spritesheet('knight', 'knightanimation.png', 12, 16);
             game.load.spritesheet('powered_door', 'powered_door.png', 48, 32);
+            game.load.spritesheet('wooden_door', 'wooden_door.png', 16, 16);
+
         }
 
         var map1;
@@ -82,11 +85,11 @@
             map.wallLayer = map.createLayer('Walls');
             map.forgroundLayer = map.createLayer('Forground');
             map.animatedLayer = map.createLayer('Animated');
+            map.animatedLayer.visible = false;
 
             map.floorLayer.resizeWorld();
             map.wallLayer.resizeWorld();
             map.forgroundLayer.resizeWorld();
-            map.animatedLayer.resizeWorld();
 
             //  Our painting marker
             if (marker) {
@@ -125,8 +128,8 @@
             map1.goalX = 3*TILE_WIDTH + X_OFFSET;
             map1.goalY = 3*TILE_WIDTH;
 
-            map2.goalX = 0;
-            map2.goalY = 0;
+            map2.goalX = 2*TILE_WIDTH + X_OFFSET;
+            map2.goalY = TILE_WIDTH;
 
             game.input.addMoveCallback(updateMarker, this);
 
@@ -274,6 +277,12 @@
 
             nextMap = currentMap.nextMap;
             renderMap(nextMap);
+
+            nextMap.door = game.add.sprite(2*TILE_WIDTH, 8*TILE_WIDTH, 'wooden_door');
+            nextMap.door.frame = 0;
+            nextMap.door.animations.add('open', [0, 1, 2, 3], 8, false);
+            nextMap.door.animations.add('close', [3, 2, 1, 0], 8, false);
+            nextMap.door.animations.play('close');
 
             createKnight(2, 11);
         };
