@@ -39,6 +39,9 @@
         var TILE_WIDTH = 16;
         var SCALE = 3.5
 
+        // Accomodate for sprite offset
+        var X_OFFSET = 2;
+
         var game = new Phaser.Game(
             800,
             600,
@@ -49,6 +52,8 @@
 
         function preload() {
             game.load.tilemap('map', 'maps/map1.json', null, Phaser.Tilemap.TILED_JSON);
+            game.load.tilemap('map2', 'maps/map2.json', null, Phaser.Tilemap.TILED_JSON);
+
             game.load.image('dungeon_sheet', 'dungeon_sheet.png');
             game.load.spritesheet('knight', 'knightanimation.png', 12, 16);
         }
@@ -62,6 +67,7 @@
         var knight;
         var cursors;
         var currentDataString;
+        var currentMap;
 
         function create() {
             Phaser.Canvas.setImageRenderingCrisp(game.canvas)
@@ -79,14 +85,18 @@
             game.physics.startSystem(Phaser.Physics.ARCADE);
 
             map = game.add.tilemap('map');
-
+            map2 = game.add.tilemap('map2');
             map.addTilesetImage('dungeon_sheet');
-
-            // map.setCollisionBetween(1, 12);
+            map2.addTilesetImage('dungeon_sheet');
 
             floorLayer = map.createLayer('Floor');
             wallLayer = map.createLayer('Walls');
             forgroundLayer = map.createLayer('Forground');
+
+            map.nextMap = map2;
+            map.goalX = 3*TILE_WIDTH + X_OFFSET;
+            map.goalY = 3*TILE_WIDTH;
+            currentMap = map;
 
             floorLayer.resizeWorld();
             wallLayer.resizeWorld();
@@ -101,7 +111,7 @@
 
             game.input.onDown.add(getTilePropertiesFromPointer, this);
 
-            knight = game.add.sprite(3*TILE_WIDTH+2, 5*TILE_WIDTH, 'knight');
+            knight = game.add.sprite(3*TILE_WIDTH+X_OFFSET, 5*TILE_WIDTH, 'knight');
             game.physics.arcade.enable(knight);
             knight.targetX = knight.body.x;
             knight.targetY = knight.body.y;
@@ -201,8 +211,16 @@
 
         }
 
-        function update() {
+        function renderNextMap() {
+            console.log("Rendering next map")
+            // nextMap = currentMap.nextMap;
 
+        };
+
+        function update() {
+            if (knight.body.x == currentMap.goalX && knight.body.y == currentMap.goalY) {
+                renderNextMap();
+            }
         }
 
         function render() {
