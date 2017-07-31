@@ -70,9 +70,10 @@
         function createKnight(x, y) {
             knight = game.add.sprite(x*TILE_WIDTH+X_OFFSET, y*TILE_WIDTH, 'knight');
             game.physics.arcade.enable(knight);
+            game.camera.follow(knight, Phaser.Camera.FOLLOW_TOPDOWN_TIGHT);
             knight.targetX = knight.body.x;
             knight.targetY = knight.body.y;
-            // knight.body.collideWorldBounds = true;
+
             knight.frame = 0;
             knight.animations.add('up', [0, 1, 2], 8, true);
             knight.animations.add('down', [12, 13, 14], 8, true);
@@ -104,6 +105,7 @@
         }
 
         function create() {
+
             Phaser.Canvas.setImageRenderingCrisp(game.canvas)
             PIXI.scaleModes.DEFAULT = PIXI.scaleModes.NEAREST
 
@@ -115,7 +117,7 @@
             game.renderer.renderSession.roundPixels = true;
             Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
 
-            // game.world.scale.setTo(SCALE, SCALE);
+            game.world.setBounds(-200, -200, 500, 500);
             game.physics.startSystem(Phaser.Physics.ARCADE);
 
             map1 = game.add.tilemap('map');
@@ -297,7 +299,6 @@
             }
 
             newBatteryState = window.battery.charging;
-            // newBatteryState = true;
 
             if (oldBatteryState != newBatteryState) {
                 oldBatteryState = newBatteryState;
