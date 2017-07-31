@@ -54,6 +54,8 @@
             game.load.spritesheet('knight', 'knightanimation.png', 12, 16);
             game.load.spritesheet('powered_door', 'force_field.png', 48, 32);
             game.load.spritesheet('wooden_door', 'wooden_door.png', 16, 16);
+
+            game.load.audio('dungeon', ['Overworld.mp3']);
         }
 
         var map1;
@@ -244,6 +246,9 @@
             cursors.right.onDown.add(moveRight, this);
             cursors.up.onDown.add(moveUp, this);
             cursors.down.onDown.add(moveDown, this);
+
+            music = game.add.audio('dungeon');
+            music.play();
 
             fragmentSrc = [
                 'precision lowp float;',
