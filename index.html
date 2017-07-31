@@ -3,9 +3,11 @@
     <head>
         <title>phaser - hello world</title>
     </head>
+    <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
     <button id="chargingState" onclick="onClick()"></button>
     <script src="phaser.js"></script>
     <script>
+
         function updateText() {
             var chargingStateEl = document.getElementById('chargingState');
             chargingStateEl.textContent = 'Charging: ' + window.battery.charging;
@@ -52,7 +54,6 @@
             game.load.spritesheet('knight', 'knightanimation.png', 12, 16);
             game.load.spritesheet('powered_door', 'force_field.png', 48, 32);
             game.load.spritesheet('wooden_door', 'wooden_door.png', 16, 16);
-
         }
 
         var map1;
@@ -66,6 +67,52 @@
         var currentMap;
 
         var luminosity = {x: 0};
+
+        var dialog1 = [
+            "The sky above the port was",
+            "the color of television,",
+            "tuned to a dead channel.",
+        ];
+
+        var line = [];
+
+        var wordIndex = 0;
+        var lineIndex = 0;
+
+        var wordDelay = 120;
+        var lineDelay = 400;
+
+        function nextLine(dialog) {
+
+            if (lineIndex === dialog.length) {
+                return;
+            }
+
+            line = dialog[lineIndex].split(' ');
+            wordIndex = 0;
+            function nextWordDialog() {
+                return nextWord(dialog);
+            }
+            game.time.events.repeat(wordDelay, line.length, nextWordDialog, this);
+            lineIndex++;
+
+        }
+
+        function nextWord(dialog) {
+
+            text.text = text.text.concat(line[wordIndex] + " ");
+            wordIndex++;
+
+            if (wordIndex === line.length)
+            {
+                text.text = text.text.concat("\n");
+                function nextLineDialog() {
+                    return nextLine(dialog);
+                }
+                game.time.events.add(lineDelay, nextLineDialog, this);
+            }
+
+        }
 
         function createKnight(x, y) {
             knight = game.add.sprite(x*TILE_WIDTH+X_OFFSET, y*TILE_WIDTH, 'knight');
@@ -222,6 +269,11 @@
 
             filter = new Phaser.Filter(game, null, fragmentSrc);
             game.world.filters = [filter];
+
+            textStyle = { font: 'Ariel', fill: '#ffffff', fontSize: 16}
+            text = game.add.text(2, 2, '', textStyle);
+
+            nextLine(dialog1);
 
         }
 
