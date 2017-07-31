@@ -44,15 +44,15 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="55"/>
-   <tile gid="55"/>
-   <tile gid="55"/>
-   <tile gid="55"/>
+   <tile gid="212"/>
+   <tile gid="212"/>
+   <tile gid="212"/>
    <tile gid="55"/>
    <tile gid="0"/>
    <tile gid="55"/>
-   <tile gid="55"/>
-   <tile gid="55"/>
-   <tile gid="55"/>
+   <tile gid="236"/>
+   <tile gid="236"/>
+   <tile gid="236"/>
    <tile gid="55"/>
    <tile gid="0"/>
    <tile gid="55"/>
@@ -108,15 +108,15 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="6"/>
-   <tile gid="7"/>
-   <tile gid="7"/>
-   <tile gid="7"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="8"/>
    <tile gid="0"/>
    <tile gid="30"/>
-   <tile gid="217"/>
    <tile gid="0"/>
-   <tile gid="219"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="32"/>
    <tile gid="0"/>
    <tile gid="54"/>
@@ -220,7 +220,7 @@
    <tile gid="0"/>
   </data>
  </layer>
- <layer name="Animated" width="6" height="10">
+ <layer name="Animated" width="6" height="10" visible="0">
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
