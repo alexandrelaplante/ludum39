@@ -10,7 +10,7 @@
          "width":6,
          "x":0,
          "y":0
-        }, 
+        },
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 7, 7, 7, 8, 0, 30, 0, 0, 0, 32, 0, 54, 0, 0, 0, 56, 0, 54, 0, 0, 0, 56, 0, 54, 0, 0, 0, 56, 0, 54, 0, 0, 0, 56, 0, 54, 0, 0, 0, 56, 0, 78, 79, 79, 79, 80],
          "height":10,
@@ -21,7 +21,7 @@
          "width":6,
          "x":0,
          "y":0
-        }, 
+        },
         {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 0, 0, 0, 0, 0, 0, 0, 0, 0, 187, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          "height":10,
@@ -32,40 +32,41 @@
          "width":6,
          "x":0,
          "y":0
-        }, 
+        },
         {
+         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 193, 194, 195, 0, 0, 0, 217, 218, 219, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          "height":10,
-         "name":"Objects",
-         "objects":[],
+         "name":"Animated",
          "opacity":1,
-         "type":"objectgroup",
+         "type":"tilelayer",
          "visible":true,
          "width":6,
          "x":0,
          "y":0
         }],
+ "nextobjectid":1,
  "orientation":"orthogonal",
- "properties":
-    {
-
-    },
+ "renderorder":"right-down",
+ "tiledversion":"1.0.2",
  "tileheight":16,
  "tilesets":[
         {
+         "columns":24,
          "firstgid":1,
          "image":"..\/dungeon_sheet.png",
          "imageheight":160,
          "imagewidth":384,
          "margin":0,
          "name":"dungeon_sheet",
-         "properties":
-            {
-
-            },
          "spacing":0,
+         "tilecount":240,
          "tileheight":16,
          "tileproperties":
             {
+             "192":
+                {
+                 "door":"true"
+                },
              "29":
                 {
                  "wall":"true"
@@ -83,9 +84,33 @@
                  "wall":"true"
                 }
             },
+         "tilepropertytypes":
+            {
+             "192":
+                {
+                 "door":"string"
+                },
+             "29":
+                {
+                 "wall":"string"
+                },
+             "31":
+                {
+                 "wall":"string"
+                },
+             "5":
+                {
+                 "wall":"string"
+                },
+             "7":
+                {
+                 "wall":"string"
+                }
+            },
          "tilewidth":16
         }],
  "tilewidth":16,
+ "type":"map",
  "version":1,
  "width":6
 }

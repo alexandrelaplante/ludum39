@@ -68,7 +68,6 @@
         var oldBatteryState;
 
         var knight;
-        var door;
         var cursors;
         var currentDataString;
         var currentMap;
@@ -77,10 +76,12 @@
             map.floorLayer = map.createLayer('Floor');
             map.wallLayer = map.createLayer('Walls');
             map.forgroundLayer = map.createLayer('Forground');
+            map.animatedLayer = map.createLayer('Animated');
 
             map.floorLayer.resizeWorld();
             map.wallLayer.resizeWorld();
             map.forgroundLayer.resizeWorld();
+            map.animatedLayer.resizeWorld();
 
             //  Our painting marker
             if (marker) {
@@ -137,11 +138,11 @@
             knight.animations.add('left', [18, 19, 20], 8, true);
             knight.animations.add('right', [6, 7, 8], 8, true);
 
-            door = game.add.sprite(2*TILE_WIDTH, 2*TILE_WIDTH, 'powered_door');
-            door.frame = 0;
-            door.animations.add('open', [0, 1, 2, 3, 4], 8, false);
-            door.animations.add('close', [4, 3, 2, 1, 0], 8, false);
-            door.animations.play('close');
+            map1.door = game.add.sprite(2*TILE_WIDTH, 2*TILE_WIDTH, 'powered_door');
+            map1.door.frame = 0;
+            map1.door.animations.add('open', [0, 1, 2, 3, 4], 8, false);
+            map1.door.animations.add('close', [4, 3, 2, 1, 0], 8, false);
+            map1.door.animations.play('close');
 
             cursors = game.input.keyboard.createCursorKeys();
 
@@ -216,9 +217,9 @@
 
             var tile = currentMap.getTile(x, y, currentMap.wallLayer);
 
-            // Note: JSON.stringify will convert the object tile properties to a string
-            return tile != null;
+            var closedDoor = currentMap.getTile(x, y, currentMap.animatedLayer) && !currentMap.door.isOpen;
 
+            return tile != null || closedDoor;
         }
 
         function getTilePropertiesFromPointer() {
@@ -240,6 +241,7 @@
             currentMap.floorLayer.destroy();
             currentMap.wallLayer.destroy();
             currentMap.forgroundLayer.destroy();
+            currentMap.animatedLayer.destroy()
             knight.destroy();
 
             nextMap = currentMap.nextMap;
@@ -268,9 +270,11 @@
             if (oldBatteryState != newBatteryState) {
                 oldBatteryState = newBatteryState;
                 if (newBatteryState) {
-                    door.animations.play('open');
+                    currentMap.door.animations.play('open');
+                    currentMap.door.isOpen = true;
                 } else {
-                    door.animations.play('close');
+                    currentMap.door.animations.play('close');
+                    currentMap.door.isOpen = false;
                 }
             }
 
