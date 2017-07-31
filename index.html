@@ -40,7 +40,7 @@
 
         var game = new Phaser.Game(
             200,
-            200,
+            150,
             Phaser.AUTO,
             'ludum39',
             { preload: preload, create: create, update: update, render: render }
@@ -189,7 +189,7 @@
             map1.door.animations.add('close', [0, 1, 2, 3, 4], 8, false);
             map1.door.animations.add('open', [4, 3, 2, 1, 0], 8, false);
 
-            knight = createKnight(3, 5);
+            knight = createKnight(14, 10);
 
             cursors = game.input.keyboard.createCursorKeys();
 
@@ -271,7 +271,7 @@
             textStyle = { font: 'Ariel', fill: '#ffffff', fontSize: 16}
             text = game.add.text(2, 2, '', textStyle);
 
-            nextLine(dialog1);
+            // nextLine(dialog1);
 
         }
 
