@@ -27,6 +27,7 @@
                 'this platform.'
             );
             window.battery = {charging: true};
+            updateText();
         }
 
         var TILE_WIDTH = 16;
@@ -279,7 +280,7 @@
             renderMap(nextMap);
 
             nextMap.door = game.add.sprite(2*TILE_WIDTH, 8*TILE_WIDTH, 'wooden_door');
-            nextMap.door.frame = 0;
+            nextMap.door.frame = 3;
             nextMap.door.animations.add('open', [0, 1, 2, 3], 8, false);
             nextMap.door.animations.add('close', [3, 2, 1, 0], 8, false);
             nextMap.door.animations.play('close');
@@ -300,15 +301,28 @@
 
             if (oldBatteryState != newBatteryState) {
                 oldBatteryState = newBatteryState;
-                updateText();
+
+                wooden_door = currentMap.door.key == 'wooden_door';
                 if (newBatteryState) {
-                    currentMap.door.animations.play('open');
-                    currentMap.door.isOpen = true;
                     game.add.tween(luminosity).to({x: 5000}, 1000, Phaser.Easing.Quadratic.In, true);
+                    if (!wooden_door) {
+                        currentMap.door.animations.play('open');
+                        currentMap.door.isOpen = true;
+                    }
+                    else {
+                        currentMap.door.animations.play('close');
+                        currentMap.door.isOpen = false;
+                    }
                 } else {
-                    currentMap.door.animations.play('close');
-                    currentMap.door.isOpen = false;
                     game.add.tween(luminosity).to({x: -5000}, 1000, Phaser.Easing.Quadratic.Out, true);
+                    if (!wooden_door) {
+                        currentMap.door.animations.play('close');
+                        currentMap.door.isOpen = false;
+                    }
+                    else {
+                        currentMap.door.animations.play('open');
+                        currentMap.door.isOpen = true;
+                    }
                 }
             }
 
