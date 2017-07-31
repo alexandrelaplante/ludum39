@@ -72,6 +72,20 @@
         var currentDataString;
         var currentMap;
 
+        function createKnight(x, y) {
+            knight = game.add.sprite(x*TILE_WIDTH+X_OFFSET, y*TILE_WIDTH, 'knight');
+            game.physics.arcade.enable(knight);
+            knight.targetX = knight.body.x;
+            knight.targetY = knight.body.y;
+            // knight.body.collideWorldBounds = true;
+            knight.frame = 0;
+            knight.animations.add('up', [0, 1, 2], 8, true);
+            knight.animations.add('down', [12, 13, 14], 8, true);
+            knight.animations.add('left', [18, 19, 20], 8, true);
+            knight.animations.add('right', [6, 7, 8], 8, true);
+            return knight;
+        }
+
         function renderMap(map) {
             map.floorLayer = map.createLayer('Floor');
             map.wallLayer = map.createLayer('Walls');
@@ -127,16 +141,7 @@
 
             game.input.onDown.add(getTilePropertiesFromPointer, this);
 
-            knight = game.add.sprite(3*TILE_WIDTH+X_OFFSET, 5*TILE_WIDTH, 'knight');
-            game.physics.arcade.enable(knight);
-            knight.targetX = knight.body.x;
-            knight.targetY = knight.body.y;
-            // knight.body.collideWorldBounds = true;
-            knight.frame = 0;
-            knight.animations.add('up', [0, 1, 2], 8, true);
-            knight.animations.add('down', [12, 13, 14], 8, true);
-            knight.animations.add('left', [18, 19, 20], 8, true);
-            knight.animations.add('right', [6, 7, 8], 8, true);
+            knight = createKnight(3, 5);
 
             map1.door = game.add.sprite(2*TILE_WIDTH, 2*TILE_WIDTH, 'powered_door');
             map1.door.frame = 0;
@@ -247,15 +252,7 @@
             nextMap = currentMap.nextMap;
             renderMap(nextMap);
 
-            knight = game.add.sprite(3*TILE_WIDTH+X_OFFSET, 5*TILE_WIDTH, 'knight');
-            game.physics.arcade.enable(knight);
-            knight.targetX = knight.body.x;
-            knight.targetY = knight.body.y;
-            knight.frame = 0;
-            knight.animations.add('up', [0, 1, 2], 8, true);
-            knight.animations.add('down', [12, 13, 14], 8, true);
-            knight.animations.add('left', [18, 19, 20], 8, true);
-            knight.animations.add('right', [6, 7, 8], 8, true);
+            createKnight(2, 11);
         };
 
         function update() {
@@ -267,6 +264,8 @@
             }
 
             newBatteryState = window.battery.charging;
+            // newBatteryState = true;
+
             if (oldBatteryState != newBatteryState) {
                 oldBatteryState = newBatteryState;
                 if (newBatteryState) {
