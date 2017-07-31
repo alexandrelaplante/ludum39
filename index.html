@@ -3,41 +3,30 @@
     <head>
         <title>phaser - hello world</title>
     </head>
-    <div id="chargingState"></div>
+    <button id="chargingState" onclick="onClick()"></button>
+    <script src="phaser.js"></script>
     <script>
-        var chargingStateEl = document.getElementById('chargingState');
-
-        function updateBatteryUI(battery) {
-            if (battery.charging === true) {
-                chargingStateEl.textContent = 'Charging';
-            } else if (battery.charging === false) {
-                chargingStateEl.textContent = 'Discharging';
-                return 'Discharging';
-            }
+        function updateText() {
+            var chargingStateEl = document.getElementById('chargingState');
+            chargingStateEl.textContent = 'Charing: ' + window.battery.charging;
         }
 
-        function monitorBattery(battery) {
-            // Update the initial UI.
-            updateBatteryUI(battery);
-
-            // Monitor for futher updates.
-            battery.addEventListener(
-                'chargingchange',
-                updateBatteryUI.bind(null, battery),
-            );
-
-            window.battery = battery;
+        function onClick() {
+            window.battery = {charging: !window.battery.charging};
+            updateText();
         }
 
         if ('getBattery' in navigator) {
-            navigator.getBattery().then(monitorBattery);
+            navigator.getBattery().then(function(battery) {
+                window.battery = battery;
+                updateText();
+            });
         } else {
-            ChromeSamples.setStatus('The Battery Status API is not supported on ' +
-                'this platform.');
+            alert(
+                'The Battery Status API is not supported on ' +
+                'this platform.'
+            );
         }
-    </script>
-    <script src="phaser.js"></script>
-    <script>
 
         var TILE_WIDTH = 16;
         var SCALE = 3.5
@@ -72,6 +61,8 @@
         var cursors;
         var currentDataString;
         var currentMap;
+
+        var luminosity = {x: 0};
 
         function renderMap(map) {
             map.floorLayer = map.createLayer('Floor');
@@ -188,6 +179,38 @@
                 var targetY = knight.targetY + TILE_WIDTH;
                 return move(targetX, targetY, 'down');
             }, this);
+
+            fragmentSrc = [
+                'precision lowp float;',
+                'varying vec2 vTextureCoord;',
+                'varying vec4 vColor;',
+                'uniform sampler2D uSampler;',
+                'uniform float time;',
+                'uniform vec2 mouse;',
+
+                'void main() {',
+                    'vec4 sum = vec4(0);',
+                    'vec2 texcoord = vTextureCoord;',
+                    'for(int xx = -4; xx <= 4; xx++) {',
+                        'for(int yy = -3; yy <= 3; yy++) {',
+                            'float dist = sqrt(float(xx*xx) + float(yy*yy));',
+                            'float factor = 0.0;',
+                            'if (dist == 0.0) {',
+                                'factor = 2.0;',
+                            '} else {',
+                                'factor = 2.0/abs(float(dist));',
+                            '}',
+                            'sum += texture2D(uSampler, texcoord + vec2(xx, yy) * 0.002) * factor;',
+                        '}',
+                    '}',
+                    'float luminosity = mouse.x;',
+                    'gl_FragColor = sum * luminosity * 0.001 + texture2D(uSampler, texcoord);',
+                '}'
+            ];
+
+            filter = new Phaser.Filter(game, null, fragmentSrc);
+            game.world.filters = [filter];
+
         }
 
         function isMoving() {
@@ -267,12 +290,20 @@
             newBatteryState = window.battery.charging;
             if (oldBatteryState != newBatteryState) {
                 oldBatteryState = newBatteryState;
+                updateText();
                 if (newBatteryState) {
                     door.animations.play('open');
+                    game.add.tween(luminosity).to({x: 5000}, 1000, Phaser.Easing.Bounce.In, true);
                 } else {
                     door.animations.play('close');
+                    game.add.tween(luminosity).to({x: -5000}, 1000, Phaser.Easing.Bounce.Out, true);
                 }
             }
+
+            pointer = game.input.activePointer;
+            pointer.x = luminosity.x;
+
+            filter.update(pointer);
 
         }
 
