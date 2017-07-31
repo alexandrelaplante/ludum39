@@ -151,6 +151,56 @@
             currentMap = map;
         }
 
+        function move(targetX, targetY, animation) {
+
+            if (isMoving()) {
+                return;
+            }
+
+            knight.animations.play(animation);
+
+            if (!isWall(targetX, targetY)) {
+                knight.targetX = targetX;
+                knight.targetY = targetY;
+                s = game.add.tween(knight.body);
+                s.to({x: targetX, y:targetY}, 400, Phaser.Easing.Linear.None);
+                s.onComplete.addOnce(function(){
+                    knight.animations.stop();
+                    if (cursors.left.isDown) {
+                        moveLeft();
+                    } else if (cursors.right.isDown) {
+                        moveRight();
+                    } else if (cursors.up.isDown) {
+                        moveUp();
+                    } else if (cursors.down.isDown) {
+                        moveDown();
+                    }
+                }, this);
+                s.start();
+            }
+        }
+
+        function moveLeft() {
+            var targetX = knight.targetX - TILE_WIDTH;
+            var targetY = knight.targetY;
+            return move(targetX, targetY, 'left');
+        }
+        function moveRight() {
+            var targetX = knight.targetX + TILE_WIDTH;
+            var targetY = knight.targetY;
+            return move(targetX, targetY, 'right');
+        }
+        function moveUp() {
+            var targetX = knight.targetX;
+            var targetY = knight.targetY - TILE_WIDTH;
+            return move(targetX, targetY, 'up');
+        }
+        function moveDown() {
+            var targetX = knight.targetX;
+            var targetY = knight.targetY + TILE_WIDTH;
+            return move(targetX, targetY, 'down');
+        }
+
         function create() {
 
             Phaser.Canvas.setImageRenderingCrisp(game.canvas)
@@ -181,63 +231,14 @@
             map2.goalX = 2*TILE_WIDTH + X_OFFSET;
             map2.goalY = TILE_WIDTH;
 
-            game.input.addMoveCallback(updateMarker, this);
+            game.input.mouse.capture = true;
 
+            game.input.addMoveCallback(updateMarker, this);
             game.input.onDown.add(getTilePropertiesFromPointer, this);
 
             knight = createKnight(14, 10);
 
             cursors = game.input.keyboard.createCursorKeys();
-
-            function move(targetX, targetY, animation) {
-
-                if (isMoving()) {
-                    return;
-                }
-
-                knight.animations.play(animation);
-
-                if (!isWall(targetX, targetY)) {
-                    knight.targetX = targetX;
-                    knight.targetY = targetY;
-                    s = game.add.tween(knight.body);
-                    s.to({x: targetX, y:targetY}, 400, Phaser.Easing.Linear.None);
-                    s.onComplete.addOnce(function(){
-                        knight.animations.stop();
-                        if (cursors.left.isDown) {
-                            moveLeft();
-                        } else if (cursors.right.isDown) {
-                            moveRight();
-                        } else if (cursors.up.isDown) {
-                            moveUp();
-                        } else if (cursors.down.isDown) {
-                            moveDown();
-                        }
-                    }, this);
-                    s.start();
-                }
-            }
-
-            function moveLeft() {
-                var targetX = knight.targetX - TILE_WIDTH;
-                var targetY = knight.targetY;
-                return move(targetX, targetY, 'left');
-            }
-            function moveRight() {
-                var targetX = knight.targetX + TILE_WIDTH;
-                var targetY = knight.targetY;
-                return move(targetX, targetY, 'right');
-            }
-            function moveUp() {
-                var targetX = knight.targetX;
-                var targetY = knight.targetY - TILE_WIDTH;
-                return move(targetX, targetY, 'up');
-            }
-            function moveDown() {
-                var targetX = knight.targetX;
-                var targetY = knight.targetY + TILE_WIDTH;
-                return move(targetX, targetY, 'down');
-            }
 
             cursors.left.onDown.add(moveLeft, this);
             cursors.right.onDown.add(moveRight, this);
@@ -294,11 +295,29 @@
             var x = currentMap.forgroundLayer.getTileX(x);
             var y = currentMap.forgroundLayer.getTileY(y);
 
-            var tile = currentMap.getTile(x, y, currentMap.forgroundLayer);
+            var tile = currentMap.getTile(x, y, currentMap.forgroundLayer) ||
+              currentMap.getTile(x, y, currentMap.wallLayer) ||
+              currentMap.getTile(x, y, currentMap.floorLayer);
 
-            // Note: JSON.stringify will convert the object tile properties to a string
-            currentDataString = JSON.stringify( tile.properties );
+            currentKnightX = knight.body.x/TILE_WIDTH;
+            currentKnightY = knight.body.y/TILE_WIDTH;
 
+            // selected axis stays the same for control
+            if (tile.y == currentKnightY) {
+                if (tile.x > knight.body.x/TILE_WIDTH) {
+                    moveRight();
+                }
+                if (tile.x < knight.body.x/TILE_WIDTH) {
+                    moveLeft();
+                }
+            } else {
+                if (tile.y > knight.body.y/TILE_WIDTH) {
+                    moveDown();
+                }
+                if (tile.y < knight.body.y/TILE_WIDTH) {
+                    moveUp();
+                }
+            }
         }
 
         function isWall(x, y) {
@@ -394,11 +413,6 @@
 
         function render() {
 
-            if(currentDataString){
-                game.debug.text('Tile properties: ' + currentDataString, TILE_WIDTH, 550);
-            } else {
-                game.debug.text("Click on a tile to reveal the properties of the tile", TILE_WIDTH, 550);
-            }
         }
 
     </script>
