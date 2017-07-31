@@ -22,21 +22,30 @@
     <property name="wall" value="true"/>
    </properties>
   </tile>
+  <tile id="192">
+   <properties>
+    <property name="door" value="true"/>
+   </properties>
+  </tile>
  </tileset>
- <layer name="Floor" width="6" height="10">
+ <layer name="Floor" width="6" height="10" visible="0">
   <data encoding="base64" compression="zlib">
    eJxjYCAdmGPBQ0UcADodCJk=
   </data>
  </layer>
- <layer name="Walls" width="6" height="10">
+ <layer name="Walls" width="6" height="10" visible="0">
   <data encoding="base64" compression="zlib">
    eJxjYCAdsAExOxLmgIrLoalTgNJmaOIWdBL3A2J/JBwAxAAF3wQT
   </data>
  </layer>
- <layer name="Forground" width="6" height="10">
+ <layer name="Forground" width="6" height="10" visible="0">
   <data encoding="base64" compression="zlib">
-   eJxjYCAPHATiQ0B8GE38JhDfAuLbZJqLDnYQqW43keoAf4UGSA==
+   eJxjYBjcYAeR6nYTqQ4AV6gBdA==
   </data>
  </layer>
- <objectgroup name="Objects" width="6" height="10"/>
+ <layer name="Animated" width="6" height="10">
+  <data encoding="base64" compression="zlib">
+   eJxjYCAPHATiQ0B8GE38JhDfAuLbZJpLawAAKM0E1Q==
+  </data>
+ </layer>
 </map>

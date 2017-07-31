@@ -23,7 +23,7 @@
          "y":0
         }, 
         {
-         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 193, 194, 195, 0, 0, 0, 217, 218, 219, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 0, 0, 0, 0, 0, 0, 0, 0, 0, 187, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 184, 0, 0, 0, 0, 0, 0, 0, 0, 0, 187, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          "height":10,
          "name":"Forground",
          "opacity":1,
@@ -36,33 +36,7 @@
         {
          "height":10,
          "name":"Objects",
-         "objects":[
-                {
-                 "height":91,
-                 "name":"",
-                 "properties":
-                    {
-
-                    },
-                 "type":"Floor",
-                 "visible":true,
-                 "width":64,
-                 "x":24,
-                 "y":60
-                }, 
-                {
-                 "height":19,
-                 "name":"",
-                 "properties":
-                    {
-
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":32,
-                 "x":40,
-                 "y":42
-                }],
+         "objects":[],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -90,6 +64,25 @@
             },
          "spacing":0,
          "tileheight":16,
+         "tileproperties":
+            {
+             "29":
+                {
+                 "wall":"true"
+                },
+             "31":
+                {
+                 "wall":"true"
+                },
+             "5":
+                {
+                 "wall":"true"
+                },
+             "7":
+                {
+                 "wall":"true"
+                }
+            },
          "tilewidth":16
         }],
  "tilewidth":16,
