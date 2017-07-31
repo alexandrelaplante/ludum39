@@ -139,10 +139,8 @@
             game.input.onDown.add(getTilePropertiesFromPointer, this);
 
             map1.door = game.add.sprite(2*TILE_WIDTH, 2*TILE_WIDTH, 'powered_door');
-            map1.door.frame = 0;
-            map1.door.animations.add('open', [0, 1, 2, 3, 4], 8, false);
-            map1.door.animations.add('close', [4, 3, 2, 1, 0], 8, false);
-            map1.door.animations.play('close');
+            map1.door.animations.add('close', [0, 1, 2, 3, 4], 8, false);
+            map1.door.animations.add('open', [4, 3, 2, 1, 0], 8, false);
 
             knight = createKnight(3, 5);
 
@@ -282,12 +280,14 @@
             renderMap(nextMap);
 
             nextMap.door = game.add.sprite(2*TILE_WIDTH, 8*TILE_WIDTH, 'wooden_door');
-            nextMap.door.frame = 3;
             nextMap.door.animations.add('open', [0, 1, 2, 3], 8, false);
             nextMap.door.animations.add('close', [3, 2, 1, 0], 8, false);
             nextMap.door.animations.play('close');
+            nextMap.door.isOpen = false;
 
             createKnight(2, 11);
+
+            // newBatteryState = !newBatteryState;
         };
 
         function update() {
@@ -306,7 +306,7 @@
                 wooden_door = currentMap.door.key == 'wooden_door';
                 if (newBatteryState) {
                     game.add.tween(luminosity).to({x: 5000}, 1000, Phaser.Easing.Quadratic.In, true);
-                    if (!wooden_door) {
+                    if (wooden_door) {
                         currentMap.door.animations.play('open');
                         currentMap.door.isOpen = true;
                     }
@@ -316,7 +316,7 @@
                     }
                 } else {
                     game.add.tween(luminosity).to({x: -5000}, 1000, Phaser.Easing.Quadratic.Out, true);
-                    if (!wooden_door) {
+                    if (wooden_door) {
                         currentMap.door.animations.play('close');
                         currentMap.door.isOpen = false;
                     }
