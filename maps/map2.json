@@ -34,16 +34,6 @@
          "y":0
         }, 
         {
-         "draworder":"topdown",
-         "name":"Objects",
-         "objects":[],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
-        }, 
-        {
          "data":[0, 0, 0, 0, 0, 0, 217, 218, 219, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 238, 0, 0, 0, 0, 238, 238, 238, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 217, 218, 219, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          "height":13,
          "name":"Animated",
@@ -53,23 +43,37 @@
          "width":5,
          "x":0,
          "y":0
+        }, 
+        {
+         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         "height":13,
+         "name":"TextTriggers",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":5,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":1,
  "orientation":"orthogonal",
- "renderorder":"right-down",
- "tiledversion":"1.0.2",
+ "properties":
+    {
+
+    },
  "tileheight":16,
  "tilesets":[
         {
-         "columns":24,
          "firstgid":1,
          "image":"..\/dungeon_sheet.png",
          "imageheight":160,
          "imagewidth":384,
          "margin":0,
          "name":"dungeon_sheet",
+         "properties":
+            {
+
+            },
          "spacing":0,
-         "tilecount":240,
          "tileheight":16,
          "tileproperties":
             {
@@ -90,29 +94,9 @@
                  "wall":"true"
                 }
             },
-         "tilepropertytypes":
-            {
-             "29":
-                {
-                 "wall":"string"
-                },
-             "31":
-                {
-                 "wall":"string"
-                },
-             "5":
-                {
-                 "wall":"string"
-                },
-             "7":
-                {
-                 "wall":"string"
-                }
-            },
          "tilewidth":16
         }],
  "tilewidth":16,
- "type":"map",
  "version":1,
  "width":5
 }
