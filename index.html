@@ -119,7 +119,7 @@
         function createKnight(x, y) {
             knight = game.add.sprite(x*TILE_WIDTH+X_OFFSET, y*TILE_WIDTH, 'knight');
             game.physics.arcade.enable(knight);
-            game.camera.follow(knight, Phaser.Camera.FOLLOW_TOPDOWN_TIGHT);
+            game.camera.follow(knight, Phaser.Camera.FOLLOW_LOCKON, .1, .1);
             knight.targetX = knight.body.x;
             knight.targetY = knight.body.y;
 
@@ -165,7 +165,7 @@
                 knight.targetX = targetX;
                 knight.targetY = targetY;
                 s = game.add.tween(knight.body);
-                s.to({x: targetX, y:targetY}, 400, Phaser.Easing.Linear.None);
+                s.to({x: targetX, y:targetY}, 350, Phaser.Easing.Linear.None);
                 s.onComplete.addOnce(function(){
                     knight.animations.stop();
                     if (cursors.left.isDown) {
@@ -231,7 +231,7 @@
             map1.goalY = 0;
 
             map2.goalX = 2*TILE_WIDTH + X_OFFSET;
-            map2.goalY = TILE_WIDTH;
+            map2.goalY = 2*TILE_WIDTH;
 
             game.input.mouse.capture = true;
 
@@ -334,7 +334,12 @@
 
             var closedDoor = false;
             if (currentMap.door) {
-                var closedDoor = currentMap.getTile(x, y, currentMap.animatedLayer) && !currentMap.door.isOpen;
+                closedDoor = currentMap.getTile(x, y, currentMap.animatedLayer) && !currentMap.door.isOpen;
+            } else if (currentMap.all_doors) {
+                any_closed = currentMap.all_doors.some(function(door) {
+                    return !door.isOpen;
+                });
+                closedDoor = currentMap.getTile(x, y, currentMap.animatedLayer) && any_closed;
             }
 
             return tile != null || closedDoor;
@@ -369,14 +374,43 @@
             renderMap(nextMap);
             text.text = '';
 
-            nextMap.door = game.add.sprite(1*TILE_WIDTH, 7*TILE_WIDTH, 'powered_door');
+            all_doors = [];
+
+            nextMap.door = game.add.sprite(5*TILE_WIDTH, 3*TILE_WIDTH, 'powered_door');
             nextMap.door.frame = 0;
             nextMap.door.animations.add('close', [0, 1, 2, 3, 4], 8, false);
             nextMap.door.animations.add('open', [4, 3, 2, 1, 0], 8, false);
             nextMap.door.animations.play('close');
+            all_doors.push(nextMap.door);
 
-            createKnight(2, 11);
+            nextMap.door = game.add.sprite(1*TILE_WIDTH, 10*TILE_WIDTH, 'powered_door');
+            nextMap.door.frame = 0;
+            nextMap.door.animations.add('close', [0, 1, 2, 3, 4], 8, false);
+            nextMap.door.animations.add('open', [4, 3, 2, 1, 0], 8, false);
+            nextMap.door.animations.play('close');
+            all_doors.push(nextMap.door);
+
+            nextMap.door = game.add.sprite(13*TILE_WIDTH, 7*TILE_WIDTH, 'powered_door');
+            nextMap.door.frame = 0;
+            nextMap.door.animations.add('close', [0, 1, 2, 3, 4], 8, false);
+            nextMap.door.animations.add('open', [4, 3, 2, 1, 0], 8, false);
+            nextMap.door.animations.play('close');
+            all_doors.push(nextMap.door);
+
+            nextMap.door = undefined;
+
+            nextMap.all_doors = all_doors;
+
+            createKnight(16, 3);
         };
+
+        function updateDoors(openDoor) {
+            all_doors.forEach(function(door) {
+                door.isOpen = openDoor;
+                animation = openDoor ? 'open' : 'close'
+                door.animations.play(animation);
+            });
+        }
 
         function update() {
             if (knight.body.x == currentMap.goalX && knight.body.y == currentMap.goalY) {
@@ -396,14 +430,17 @@
                     if (currentMap.door) {
                         currentMap.door.animations.play('close');
                         currentMap.door.isOpen = false;
+                    } else if (currentMap.all_doors) {
+                        updateDoors(false);
                     }
                 } else {
                     game.add.tween(luminosity).to({x: -5000}, 1000, Phaser.Easing.Quadratic.Out, true);
                     if (currentMap.door) {
                         currentMap.door.animations.play('open');
                         currentMap.door.isOpen = true;
-                    }
-                }
+                    } else if (currentMap.all_doors) {
+                        updateDoors(true);
+                    }                }
             }
 
             // What a hack.
@@ -413,7 +450,6 @@
             pointer.x = luminosity.x;
 
             filter.update(pointer);
-
         }
 
         function render() {
