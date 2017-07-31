@@ -70,12 +70,6 @@
 
         var luminosity = {x: 0};
 
-        var dialog1 = [
-            "The sky above the port was",
-            "the color of television,",
-            "tuned to a dead channel.",
-        ];
-
         var line = [];
 
         var wordIndex = 0;
@@ -84,7 +78,7 @@
         var wordDelay = 120;
         var lineDelay = 400;
 
-        function nextLine(dialog) {
+        function nextLine(dialog, text) {
 
             if (lineIndex === dialog.length) {
                 return;
@@ -93,14 +87,14 @@
             line = dialog[lineIndex].split(' ');
             wordIndex = 0;
             function nextWordDialog() {
-                return nextWord(dialog);
+                return nextWord(dialog, text);
             }
             game.time.events.repeat(wordDelay, line.length, nextWordDialog, this);
             lineIndex++;
 
         }
 
-        function nextWord(dialog) {
+        function nextWord(dialog, text) {
 
             text.text = text.text.concat(line[wordIndex] + " ");
             wordIndex++;
@@ -109,7 +103,7 @@
             {
                 text.text = text.text.concat("\n");
                 function nextLineDialog() {
-                    return nextLine(dialog);
+                    return nextLine(dialog, text);
                 }
                 game.time.events.add(lineDelay, nextLineDialog, this);
             }
@@ -136,7 +130,9 @@
             map.wallLayer = map.createLayer('Walls');
             map.forgroundLayer = map.createLayer('Forground');
             map.animatedLayer = map.createLayer('Animated');
+            map.textLayer = map.createLayer('TextTriggers');
             map.animatedLayer.visible = false;
+            map.textLayer.visible = false;
 
             map.floorLayer.resizeWorld();
             map.wallLayer.resizeWorld();
@@ -179,6 +175,18 @@
                     }
                 }, this);
                 s.start();
+
+                d = getText(targetX, targetY);
+                if (d) {
+                    lineIndex = 0;
+                    text = game.add.text(
+                        d.x * TILE_WIDTH,
+                        d.y * TILE_WIDTH,
+                        '',
+                        textStyle
+                    );
+                    nextLine(d.dialog, text);
+                }
             }
         }
 
@@ -238,7 +246,8 @@
             game.input.addMoveCallback(updateMarker, this);
             game.input.onDown.add(getTilePropertiesFromPointer, this);
 
-            knight = createKnight(14, 10);
+            // knight = createKnight(14, 10);
+            knight = createKnight(3, 1);
 
             cursors = game.input.keyboard.createCursorKeys();
 
@@ -282,9 +291,6 @@
             game.world.filters = [filter];
 
             textStyle = { font: 'Ariel', fill: '#ffffff', fontSize: 16}
-            text = game.add.text(2, 2, '', textStyle);
-
-            // nextLine(dialog1);
 
         }
 
@@ -345,6 +351,112 @@
             return tile != null || closedDoor;
         }
 
+        function getText(x, y) {
+
+            var x = currentMap.textLayer.getTileX(x);
+            var y = currentMap.textLayer.getTileY(y);
+
+            var tile = currentMap.getTile(x, y, currentMap.textLayer);
+
+            if (!tile) {
+                return;
+            }
+
+            dialogNumber = tile.properties['text'];
+            if (dialogNumber == 10) {
+                return {
+                    x: 6,
+                    y: 17,
+                    dialog: [
+                        "The great mechanical palace.",
+                    ]
+                };
+            } else if (dialogNumber == 20) {
+                return {
+                    x: 0,
+                    y: 11,
+                    dialog: [
+                        "It's source is exchausted.",
+                        "The people are all gone.",
+                    ]
+                };
+            } else if (dialogNumber == 30) {
+                return {
+                    x: 0,
+                    y: 2,
+                    dialog: [
+                        "Power is running out.",
+                        "I need to conserve mine.",
+                    ]
+                };
+            } else if (dialogNumber == 40) {
+                return {
+                    x: 0,
+                    y: 2,
+                    dialog: [
+                        "Conservation is insufficient.",
+                        "I must master power.",
+                    ]
+                };
+            } else if (dialogNumber == 50) {
+                return {
+                    x: 0,
+                    y: 2,
+                    dialog: [
+                        "There must be a way to control",
+                        "the flow of power.",
+                    ]
+                };
+            } else if (dialogNumber == 60) {
+                return {
+                    x: 0,
+                    y: 2,
+                    dialog: [
+                        "Perhaps if I were outside.",
+                        "Outside this game.",
+                    ]
+                };
+            } else if (dialogNumber == 70) {
+                return {
+                    x: 0,
+                    y: 2,
+                    dialog: [
+                        "If only...",
+                        "I could simply unplug the power.",
+                    ]
+                };
+            } else if (dialogNumber == 80) {
+                return {
+                    x: 0,
+                    y: 2,
+                    dialog: [
+                        "Unplug your device.",
+                    ]
+                };
+            } else if (dialogNumber == 90) {
+                return {
+                    x: 0,
+                    y: 2,
+                    dialog: [
+                        "No literally.",
+                        "Try unplugging and plugging your device.",
+                        "Like in the real world.",
+                    ]
+                };
+            } else if (dialogNumber == 100) {
+                return {
+                    x: 0,
+                    y: 2,
+                    dialog: [
+                        "If you're on a desktop,",
+                        "Switch to a laptop or phone.",
+                    ]
+                };
+            }
+
+            return dialog;
+        }
+
         function getTilePropertiesFromPointer() {
 
             var x = (game.input.activePointer.worldX);
@@ -365,6 +477,7 @@
             currentMap.wallLayer.destroy();
             currentMap.forgroundLayer.destroy();
             currentMap.animatedLayer.destroy()
+            currentMap.textLayer.destroy()
             knight.destroy();
 
             nextMap = currentMap.nextMap;
