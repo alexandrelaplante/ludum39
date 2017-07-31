@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="24" height="26" tilewidth="16" tileheight="16" nextobjectid="1">
  <tileset firstgid="1" name="dungeon_sheet" tilewidth="16" tileheight="16" tilecount="240" columns="24">
+=======
+<map version="1.0" orientation="orthogonal" width="5" height="13" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="dungeon_sheet" tilewidth="16" tileheight="16">
+>>>>>>> 5a8cfa56ed64dfcb4fe12c151eeac444e3954518
   <image source="../dungeon_sheet.png" width="384" height="160"/>
   <tile id="5">
    <properties>
@@ -3100,6 +3105,82 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+<<<<<<< HEAD
+=======
+  </data>
+ </layer>
+ <layer name="Animated" width="5" height="13">
+  <data>
+>>>>>>> 5a8cfa56ed64dfcb4fe12c151eeac444e3954518
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+  </data>
+ </layer>
+ <layer name="TextTriggers" width="5" height="13">
+  <data>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
