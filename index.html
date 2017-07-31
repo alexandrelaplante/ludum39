@@ -329,7 +329,11 @@
             knight.destroy();
 
             nextMap = currentMap.nextMap;
+            if (nextMap == undefined) {
+                alert("WOOHOO");
+            }
             renderMap(nextMap);
+            text.text = '';
 
             nextMap.door = game.add.sprite(2*TILE_WIDTH, 8*TILE_WIDTH, 'wooden_door');
             nextMap.door.animations.add('open', [0, 1, 2, 3], 8, false);
@@ -338,8 +342,6 @@
             nextMap.door.isOpen = false;
 
             createKnight(2, 11);
-
-            // newBatteryState = !newBatteryState;
         };
 
         function update() {
