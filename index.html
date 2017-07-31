@@ -205,7 +205,7 @@
                     knight.targetX = targetX;
                     knight.targetY = targetY;
                     s = game.add.tween(knight.body);
-                    s.to({x: targetX, y:targetY}, 500, Phaser.Easing.Linear.None);
+                    s.to({x: targetX, y:targetY}, 400, Phaser.Easing.Linear.None);
                     s.onComplete.addOnce(function(){
                         knight.animations.stop();
                         if (cursors.left.isDown) {
