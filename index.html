@@ -176,7 +176,7 @@
 
             map1.nextMap = map2;
             map1.goalX = 3*TILE_WIDTH + X_OFFSET;
-            map1.goalY = 3*TILE_WIDTH;
+            map1.goalY = 0;
 
             map2.goalX = 2*TILE_WIDTH + X_OFFSET;
             map2.goalY = TILE_WIDTH;
@@ -184,10 +184,6 @@
             game.input.addMoveCallback(updateMarker, this);
 
             game.input.onDown.add(getTilePropertiesFromPointer, this);
-
-            map1.door = game.add.sprite(2*TILE_WIDTH, 2*TILE_WIDTH, 'powered_door');
-            map1.door.animations.add('close', [0, 1, 2, 3, 4], 8, false);
-            map1.door.animations.add('open', [4, 3, 2, 1, 0], 8, false);
 
             knight = createKnight(14, 10);
 
@@ -312,7 +308,10 @@
 
             var tile = currentMap.getTile(x, y, currentMap.wallLayer);
 
-            var closedDoor = currentMap.getTile(x, y, currentMap.animatedLayer) && !currentMap.door.isOpen;
+            var closedDoor = false;
+            if (currentMap.door) {
+                var closedDoor = currentMap.getTile(x, y, currentMap.animatedLayer) && !currentMap.door.isOpen;
+            }
 
             return tile != null || closedDoor;
         }
@@ -370,12 +369,16 @@
 
                 if (newBatteryState) {
                     game.add.tween(luminosity).to({x: 5000}, 1000, Phaser.Easing.Quadratic.In, true);
-                    currentMap.door.animations.play('close');
-                    currentMap.door.isOpen = false;
+                    if (currentMap.door) {
+                        currentMap.door.animations.play('close');
+                        currentMap.door.isOpen = false;
+                    }
                 } else {
                     game.add.tween(luminosity).to({x: -5000}, 1000, Phaser.Easing.Quadratic.Out, true);
-                    currentMap.door.animations.play('open');
-                    currentMap.door.isOpen = true;
+                    if (currentMap.door) {
+                        currentMap.door.animations.play('open');
+                        currentMap.door.isOpen = true;
+                    }
                 }
             }
 
