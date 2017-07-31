@@ -10,7 +10,6 @@
         function updateBatteryUI(battery) {
             if (battery.charging === true) {
                 chargingStateEl.textContent = 'Charging';
-                return 'Charging';
             } else if (battery.charging === false) {
                 chargingStateEl.textContent = 'Discharging';
                 return 'Discharging';
@@ -26,6 +25,8 @@
                 'chargingchange',
                 updateBatteryUI.bind(null, battery),
             );
+
+            window.battery = battery;
         }
 
         if ('getBattery' in navigator) {
@@ -239,12 +240,12 @@
                 knight.animations.stop()
             }
 
-            newBatteryState = updateBatteryUI();
+            newBatteryState = window.battery.charging;
             if (oldBatteryState != newBatteryState) {
                 oldBatteryState = newBatteryState;
-                if (newBatteryState == 'Charging') {
+                if (newBatteryState) {
                     door.animations.play('open');
-                } else if (newBatteryState == 'Discharging') {
+                } else {
                     door.animations.play('close');
                 }
             }
