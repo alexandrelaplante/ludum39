@@ -138,13 +138,13 @@
 
             game.input.onDown.add(getTilePropertiesFromPointer, this);
 
-            knight = createKnight(3, 5);
-
             map1.door = game.add.sprite(2*TILE_WIDTH, 2*TILE_WIDTH, 'powered_door');
             map1.door.frame = 0;
             map1.door.animations.add('open', [0, 1, 2, 3, 4], 8, false);
             map1.door.animations.add('close', [4, 3, 2, 1, 0], 8, false);
             map1.door.animations.play('close');
+
+            knight = createKnight(3, 5);
 
             cursors = game.input.keyboard.createCursorKeys();
 
