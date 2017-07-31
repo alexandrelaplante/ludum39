@@ -58,16 +58,34 @@
             game.load.spritesheet('knight', 'knightanimation.png', 12, 16);
         }
 
-        var map;
-        var floorLayer;
-        var wallLayer;
-        var forgroundLayer;
+        var map1;
+        var map2;
         var marker;
 
         var knight;
         var cursors;
         var currentDataString;
         var currentMap;
+
+        function renderMap(map) {
+            map.floorLayer = map.createLayer('Floor');
+            map.wallLayer = map.createLayer('Walls');
+            map.forgroundLayer = map.createLayer('Forground');
+
+            map.floorLayer.resizeWorld();
+            map.wallLayer.resizeWorld();
+            map.forgroundLayer.resizeWorld();
+
+            //  Our painting marker
+            if (marker) {
+                marker.destroy();
+            }
+            marker = game.add.graphics();
+            marker.lineStyle(2, 0xffffff, 1);
+            marker.drawRect(0, 0, TILE_WIDTH, TILE_WIDTH);
+
+            currentMap = map;
+        }
 
         function create() {
             Phaser.Canvas.setImageRenderingCrisp(game.canvas)
@@ -84,28 +102,19 @@
             // game.world.scale.setTo(SCALE, SCALE);
             game.physics.startSystem(Phaser.Physics.ARCADE);
 
-            map = game.add.tilemap('map');
+            map1 = game.add.tilemap('map');
             map2 = game.add.tilemap('map2');
-            map.addTilesetImage('dungeon_sheet');
+            map1.addTilesetImage('dungeon_sheet');
             map2.addTilesetImage('dungeon_sheet');
 
-            floorLayer = map.createLayer('Floor');
-            wallLayer = map.createLayer('Walls');
-            forgroundLayer = map.createLayer('Forground');
+            renderMap(map1);
 
-            map.nextMap = map2;
-            map.goalX = 3*TILE_WIDTH + X_OFFSET;
-            map.goalY = 3*TILE_WIDTH;
-            currentMap = map;
+            map1.nextMap = map2;
+            map1.goalX = 3*TILE_WIDTH + X_OFFSET;
+            map1.goalY = 3*TILE_WIDTH;
 
-            floorLayer.resizeWorld();
-            wallLayer.resizeWorld();
-            forgroundLayer.resizeWorld();
-
-            //  Our painting marker
-            marker = game.add.graphics();
-            marker.lineStyle(2, 0xffffff, 1);
-            marker.drawRect(0, 0, TILE_WIDTH, TILE_WIDTH);
+            map2.goalX = 0;
+            map2.goalY = 0;
 
             game.input.addMoveCallback(updateMarker, this);
 
@@ -178,10 +187,10 @@
 
         function getTileProperties(x, y) {
 
-            var x = forgroundLayer.getTileX(x);
-            var y = forgroundLayer.getTileY(y);
+            var x = currentMap.forgroundLayer.getTileX(x);
+            var y = currentMap.forgroundLayer.getTileY(y);
 
-            var tile = map.getTile(x, y, forgroundLayer);
+            var tile = currentMap.getTile(x, y, currentMap.forgroundLayer);
 
             // Note: JSON.stringify will convert the object tile properties to a string
             currentDataString = JSON.stringify( tile.properties );
@@ -190,10 +199,10 @@
 
         function isWall(x, y) {
 
-            var x = wallLayer.getTileX(x);
-            var y = wallLayer.getTileY(y);
+            var x = currentMap.wallLayer.getTileX(x);
+            var y = currentMap.wallLayer.getTileY(y);
 
-            var tile = map.getTile(x, y, wallLayer);
+            var tile = currentMap.getTile(x, y, currentMap.wallLayer);
 
             // Note: JSON.stringify will convert the object tile properties to a string
             return tile != null;
@@ -210,14 +219,29 @@
 
         function updateMarker() {
 
-            marker.x = forgroundLayer.getTileX(game.input.activePointer.worldX) * TILE_WIDTH ;
-            marker.y = forgroundLayer.getTileY(game.input.activePointer.worldY) * TILE_WIDTH ;
+            marker.x = currentMap.forgroundLayer.getTileX(game.input.activePointer.worldX) * TILE_WIDTH ;
+            marker.y = currentMap.forgroundLayer.getTileY(game.input.activePointer.worldY) * TILE_WIDTH ;
 
         }
 
         function renderNextMap() {
-            console.log("Rendering next map")
-            // nextMap = currentMap.nextMap;
+            currentMap.floorLayer.destroy();
+            currentMap.wallLayer.destroy();
+            currentMap.forgroundLayer.destroy();
+            knight.destroy();
+
+            nextMap = currentMap.nextMap;
+            renderMap(nextMap);
+
+            knight = game.add.sprite(3*TILE_WIDTH+X_OFFSET, 5*TILE_WIDTH, 'knight');
+            game.physics.arcade.enable(knight);
+            knight.targetX = knight.body.x;
+            knight.targetY = knight.body.y;
+            knight.frame = 0;
+            knight.animations.add('up', [0, 1, 2], 8, true);
+            knight.animations.add('down', [12, 13, 14], 8, true);
+            knight.animations.add('left', [18, 19, 20], 8, true);
+            knight.animations.add('right', [6, 7, 8], 8, true);
         };
 
         function update() {
